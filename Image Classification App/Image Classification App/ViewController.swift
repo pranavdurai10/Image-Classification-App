@@ -27,6 +27,10 @@ class ViewController: UIViewController {
         
         captureSession.startRunning()
         
+        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        view.layer.addSublayer(previewLayer)
+        previewLayer.frame = view.frame
+        
          
         
         
