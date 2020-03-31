@@ -39,7 +39,7 @@
 /* Begin PBXFileReference section */
 		D071FF422433C251008B4889 /* SqueezeNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = SqueezeNet.mlmodel; sourceTree = "<group>"; };
 		D071FF442433C88F008B4889 /* Resnet50.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Resnet50.mlmodel; sourceTree = "<group>"; };
-		D0B613DD24229C5E000FBA17 /* Image Classification App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Image Classification App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0B613DD24229C5E000FBA17 /* Classify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Classify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0B613E024229C5E000FBA17 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0B613E224229C5E000FBA17 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D0B613E524229C5E000FBA17 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -93,7 +93,7 @@
 		D0B613DE24229C5E000FBA17 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D0B613DD24229C5E000FBA17 /* Image Classification App.app */,
+				D0B613DD24229C5E000FBA17 /* Classify.app */,
 				D0B613F424229C61000FBA17 /* Image Classification AppTests.xctest */,
 				D0B613FF24229C61000FBA17 /* Image Classification AppUITests.xctest */,
 			);
@@ -151,7 +151,7 @@
 			);
 			name = "Image Classification App";
 			productName = "Image Classification App";
-			productReference = D0B613DD24229C5E000FBA17 /* Image Classification App.app */;
+			productReference = D0B613DD24229C5E000FBA17 /* Classify.app */;
 			productType = "com.apple.product-type.application";
 		};
 		D0B613F324229C61000FBA17 /* Image Classification AppTests */ = {
@@ -451,8 +451,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pranavdurai.Image-Classification-App";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Classify;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -469,8 +470,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pranavdurai.Image-Classification-App";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Classify;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
