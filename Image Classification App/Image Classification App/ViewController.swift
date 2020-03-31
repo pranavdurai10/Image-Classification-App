@@ -19,7 +19,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         //start camera here
         
         let captureSession = AVCaptureSession()
-        //captureSession.sessionPreset = .photo
+        captureSession.sessionPreset = .photo
         
         guard let captureDevice = AVCaptureDevice.default(for: .video) else { return }
         
@@ -37,14 +37,36 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         dataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "videoQueue"))
         captureSession.addOutput(dataOutput)
         
-        //let request = VNCoreMLRequest(model: <#T##VNCoreMLModel#>, completionHandler: <#T##VNRequestCompletionHandler?##VNRequestCompletionHandler?##(VNRequest, Error?) -> Void#>)
+        
         //VNImageRequestHandler(cgImage: <#T##CGImage#>, options: [:]).perform(<#T##requests: [VNRequest]##[VNRequest]#>)
         
     }
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        print("Camera was able to capture a frame:", Date())
+        //print("Camera was able to capture a frame:", Date())
+        
+        guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
+            else { return }
+        
+        guard let model = try? VNCoreMLModel(for: Resnet50().model)
+            else{ return }
+        let request = VNCoreMLRequest(model: model) { (finishedReq, err) in
+            //Check the errors and print
+            //print(finishedReq.results)
+            
+            guard let results = finishedReq.results as? [VNClassificationObservation]
+                else { return }
+            
+            guard let firstObservation = results.first
+                else { return }
+            print(firstObservation.identifier, firstObservation.confidence)
+        }
+        
+        try? VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:]).perform([request])
+    
+    
     }
+    
 
 
 }
