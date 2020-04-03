@@ -10,11 +10,24 @@ import UIKit
 import AVKit
 import Vision
 
-class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
-
-    override func viewDidLoad() {
+class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
+{
+    
+    let identifierLabel: UILabel =
+    {
+        let label = UILabel()
+        label.backgroundColor = .black
+        label.textColor = .white
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+  
+    
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     
         //start camera here
         
@@ -39,10 +52,23 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         
         
         //VNImageRequestHandler(cgImage: <#T##CGImage#>, options: [:]).perform(<#T##requests: [VNRequest]##[VNRequest]#>)
-        
+        setupIdentifierConfidenceLabel()
     }
     
-    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+    // Function for Confidence Label
+    fileprivate func setupIdentifierConfidenceLabel()
+    {
+    view.addSubview(identifierLabel)
+    identifierLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -32).isActive = true
+    identifierLabel.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+    identifierLabel.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+    identifierLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    
+    
+    }
+    // Function for Capturing each frame of the live feed from the iPhone's camera
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection)
+    {
         //print("Camera was able to capture a frame:", Date())
         
         guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
@@ -50,16 +76,21 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         
         guard let model = try? VNCoreMLModel(for: Resnet50().model)
             else{ return }
-        let request = VNCoreMLRequest(model: model) { (finishedReq, err) in
+        let request = VNCoreMLRequest(model: model)
+        {
+            (finishedReq, err) in
             //Check the errors and print
             //print(finishedReq.results)
             
             guard let results = finishedReq.results as? [VNClassificationObservation]
                 else { return }
             
-            guard let firstObservation = results.first
-                else { return }
+            guard let firstObservation = results.first else { return }
             print(firstObservation.identifier, firstObservation.confidence)
+            DispatchQueue.main.async {
+                self.identifierLabel.text = "\(firstObservation.identifier) \(firstObservation.confidence * 100)"
+            }
+            
         }
         
         try? VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:]).perform([request])
@@ -67,7 +98,11 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     
     }
     
-
-
+   
+    // End of function captureOutput
+    
+    
+   
 }
+
 
