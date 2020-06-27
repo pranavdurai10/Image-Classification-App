@@ -1,4 +1,3 @@
-//
 //  ViewController.swift
 //  Image Classification App
 //
@@ -9,6 +8,7 @@
 import UIKit
 import AVKit
 import Vision
+
 
 class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
 {
@@ -75,7 +75,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             else { return }
         
         guard let model = try? VNCoreMLModel(for: Resnet50().model)
-            else{ return }
+            else { return }
         let request = VNCoreMLRequest(model: model)
         {
             (finishedReq, err) in
@@ -89,10 +89,20 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             print(firstObservation.identifier, firstObservation.confidence)
             DispatchQueue.main.async {
                 self.identifierLabel.text = "\(firstObservation.identifier) \(firstObservation.confidence * 100)"
+                
+                
+                //code for text-speech
+                let utterance = AVSpeechUtterance(string: firstObservation.identifier )
+                utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+                
+                //code for utterance rate
+                utterance.rate = 0.00001
+                let synthesizer = AVSpeechSynthesizer()
+                synthesizer.speak(utterance)
             }
             
+            
         }
-        
         try? VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:]).perform([request])
     
     
